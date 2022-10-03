@@ -1,0 +1,44 @@
+A = readmatrix('Lab3.txt'); % Reading data
+
+% Assigning data to different matrices
+
+time = A(:,1)./1000;
+time = time';
+Vserial = A(:,2);
+Vserial = Vserial';
+potentiometer = A(:,3);
+potentiometer = potentiometer' ;
+
+%%% Experimental values
+
+Vin = 5;
+Rref = 3300;
+R2 = 3300;
+
+%%% Conversion factor
+
+Vout = (5*Vserial)./1023;
+
+%%% Voltage Divider relationship
+
+R1 = R2*(Vin./Vout - 1);
+
+%%% Steinhart-Hart equation
+
+A1 = 3.354016*10^-3;
+B1 = 2.569850*10^-4;
+C1 = 2.620131*10^-6;
+D1 = 6.383091*10^-8;
+T = 1./(A1 + B1*log(R1./Rref) + C1*((log(R1./Rref)).^2) + D1*((log(R1./Rref)).^3));
+
+%%% Plotting
+
+xlim([0 235]);
+yyaxis left
+plot(time, potentiometer);
+ylabel('Potentiometer value(in AU)')
+yyaxis right
+plot(time,T);
+xlabel('Time in Seconds(s)')
+ylabel('Temperature in Kelvins(K)')
+title('Plot of Temperature and Potentiometer Value vs Time');
