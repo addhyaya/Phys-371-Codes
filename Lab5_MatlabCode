@@ -1,0 +1,26 @@
+A = readmatrix('Width1data.txt'); % Reading data
+B = readmatrix('Width5data.txt');
+C = readmatrix('Width10data.txt');
+% Assigning data to different matrices
+
+time1 = A(:,1)./1000;
+time1 = time1';
+Vserial1 = A(:,2);
+Vserial1 = Vserial1';
+
+time2 = B(:,1)./1000;
+time2 = time2';
+Vserial2 = B(:,2);
+Vserial2 = Vserial2';
+
+time3 = C(:,1)./1000;
+time3 = time3';
+Vserial3 = C(:,2);
+Vserial3 = Vserial3';
+
+plot(time1, Vserial1,'g',time2, Vserial2, 'b',time3, Vserial3,'r');
+ylim([150 470]);
+xlim([6 16]);
+xlabel('Time in seconds');
+ylabel('Serial Output')
+legend('Avg=1','Avg=5','Avg=10')
