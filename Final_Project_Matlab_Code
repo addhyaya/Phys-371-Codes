@@ -1,0 +1,39 @@
+A = readmatrix('data2.txt'); % Reading data
+
+time = A(:,1); % Converting time into seconds and creating an array of time data
+
+Vserial1 = A(:,2); % Creating an array of voltage data
+
+Vserial2 = A(:,3);
+
+Vserial3 = A(:,4);
+%% Given parameters
+Vin = 5; 
+Rref = 3300;
+R2 = 3300;
+
+Vout1 = (5*Vserial1)./1023;% Converting serial to actual voltage value
+Vout2 = (5*Vserial2)./1023;
+Vout3 = (5*Vserial3)./1023;
+R11 = R2*(Vin./Vout1 - 1); % Calculating resistance of thermistor
+R12 = R2*(Vin./Vout2 - 1);
+R13 = R2*(Vin./Vout3 - 1);
+%% Constants from thermistor datasheet
+A1 = 3.354016*10^-3;
+B1 = 2.569850*10^-4;
+C1 = 2.620131*10^-6;
+D1 = 6.383091*10^-8;
+
+%% Plugging into the formula
+T1 = 1./(A1 + B1*log(R11./Rref) + C1*((log(R11./Rref)).^2) + D1*((log(R11./Rref)).^3));
+T2 = 1./(A1 + B1*log(R12./Rref) + C1*((log(R12./Rref)).^2) + D1*((log(R12./Rref)).^3));
+T3 = 1./(A1 + B1*log(R13./Rref) + C1*((log(R13./Rref)).^2) + D1*((log(R13./Rref)).^3));
+% %% Plotting
+plot(time,T1,time,T2,time,T3);
+legend('x=2.8 inch','x=5.7 inch','x=9.2 inch')
+xlim([0 620]);
+% plot(time,T2);
+% plot(time,T3);
+xlabel('Time in Seconds(s)')
+ylabel('Temperature in Kelvins(K)')
+title('Plot of Temperature vs Time');
